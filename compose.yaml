@@ -1,0 +1,67 @@
+services:
+  frontend:
+    build:
+      context: frontend
+      target: development
+#    ports:
+#      - 3000:3000
+#      - "443:8043"
+    stdin_open: true
+    volumes:
+      - type: bind
+        source: ./frontend
+        target: /usr/src/app
+      - /usr/src/app/node_modules
+    restart: always
+    networks:
+      - front-tier
+      - back-tier
+#    configs:
+#      - httpd-config
+#    secrets:
+#      - server-certificate
+    depends_on:
+      - backend
+
+  backend:
+    restart: always
+    build:
+      context: backend
+      target: development
+    environment:
+      - PORT=3000
+    env_file:
+      - ./backend/.env
+    ports:
+      - 3000:3000
+#    expose:
+#      - 3000
+    volumes:
+      - type: bind
+        source: ./backend
+        target: /usr/src/app
+#      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - back-tier
+#    depends_on:
+#      - mongo
+
+volumes:
+  db-data:
+    driver: flocker
+    driver_opts:
+      size: "10GiB"
+
+configs:
+  httpd-config:
+    external: true
+
+secrets:
+  server-certificate:
+    external: true
+
+networks:
+  # The presence of these objects is sufficient to define them
+  front-tier: {}
+  back-tier: {}
