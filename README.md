@@ -25,3 +25,7 @@ Entry control in rooms by UniVersoMe
 
 # Credits
 _Gianluca Carbone_
+
+## Tutorials
+1. [Docker + Node.JS](https://www.youtube.com/watch?v=gm_L69NHuHM)
+2. [Learn Express.JS in 35 minutes](https://www.youtube.com/watch?v=SccSCuHhOw0)
